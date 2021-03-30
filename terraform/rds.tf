@@ -1,7 +1,7 @@
 module "rds" {
   source               = "./modules/rds"
   environment          = var.environment
-  private_subnet_ids   = module.vpc.private_subnet_ids
+  private_subnet_ids   = module.vpc.subnet_ids
   allocated_storage    = var.rds_allocated_storage
   engine               = var.rds_engine
   engine_version       = var.rds_engine_version

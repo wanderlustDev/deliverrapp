@@ -73,7 +73,7 @@ resource "aws_elastic_beanstalk_environment" "eb_env" {
   setting {
     name      = "AssociatePublicIpAddress"
     namespace = "aws:ec2:vpc"
-    value     = true
+    value     = false
   }
   setting {
     name      = "EnvironmentType"
