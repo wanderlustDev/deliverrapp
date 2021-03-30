@@ -1,5 +1,12 @@
 # Deliverr Application Infrastructure
 
+## Web Application
+The sample Web App was built using Java and SpringBoot. The application connects to the AWS RDS database and uses 
+Hibernate to access the DB. The DB used is PostgreSQL, this was added to verify that the Elastic Beanstalk Application
+could get past the security and connect to the RDS Instance. If the application cannot connect to the RDS instance, the
+EC2 instance will get terminated and the URL won't be accessible. The terraform configuration was first deployed to 
+provide the rds config, and then the web app was deployed.
+
 ## AWS Infrastructure & Terraform
 An IAM user was manually created in the AWS console to provide access to terraform. The Terraform configuration is setup
 so as to allows for the customization of variables based on the environment. This thus allows you to run terraform 
@@ -38,3 +45,10 @@ The idea here is to create a Jenkins pipeline which points to this Jenkinsfile i
 deployments can then be managed in one run. Other things to add will be:
 1. Error handling - to allow graceful exit with readable error messages
 2. Add user prompt for `terraform apply` so that user can verify output of terraform plan before applying.
+
+## Test Application & Configuration
+This simple app was deployed and is currently available on this endpoint: 
+To test, enter this URL in a browser http://deliverr-dev-eb-env.eba-x8ftyavc.us-west-2.elasticbeanstalk.com/sayhello 
+or replace <your_name> in http://deliverr-dev-eb-env.eba-x8ftyavc.us-west-2.elasticbeanstalk.com/sayhello?name=<your_name> 
+with your name for a fun message. When asked for password, enter usename="username" and password="password" and you 
+should get a cool fun response :D.
