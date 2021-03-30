@@ -1,4 +1,4 @@
-# Deliverr Claims Application
+# Deliverr Application Infrastructure
 
 ## AWS Infrastructure & Terraform
 An IAM user was manually created in the AWS console to provide access to terraform. The Terraform configuration is setup
