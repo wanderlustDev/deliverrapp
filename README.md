@@ -1,12 +1,6 @@
-#Deliverr Claims Application
+# Deliverr Claims Application
 
-##Web Application
-The sample Web App was built using Java and SpringBoot. The application connects to the AWS RDS database and uses 
-Hibernate to access the DB. The DB used is PostgreSQL, this was added to verify that the Elastic Beanstalk Application
-could get past the security and connect to the RDS Instance. The terraform configuration was first deployed to 
-provide the rds config, and then the web app was deployed.
-
-##AWS Infrastructure & Terraform
+## AWS Infrastructure & Terraform
 An IAM user was manually created in the AWS console to provide access to terraform. The Terraform configuration is setup
 so as to allows for the customization of variables based on the environment. This thus allows you to run terraform 
 commands by passing the environment-specific file e.g. `terraform plan -var-file=env/dev/dev.auto.tfvars`. This allows 
@@ -30,7 +24,7 @@ resources and actions.
    - 2 Route tables were created, each for the public and private subnets to be associated with.
 5. S3 Bucket: An S3 bucket was created to hold the web app jar and use for deploying the app to Elastic Beanstalk.
 
-###Environment Variables
+### Environment Variables
 The following environment variables (`access_key`, `secret_key` and `rds_password`) were defined for the AWS Access Key,
 AWS Secret Key and RDS Password respectively. These values are not provided in the repo and can be supplied by 
 exporting the specific values to TF_VARS_<variable_name> (`export TF_VARS_access_key=*******`) before the execution 
@@ -38,13 +32,9 @@ of a terraform command. This ensures that the secrets aren't stored in any versi
 Another best practice will be to store these variables in a secure password manager like Harshicorp Vault or 1Password. 
 They can then be retrieved and updated before the execution of every terraform command.
 
-###Jenkinsfile
+### Jenkinsfile
 Please note that this was a rough sketch. It was not deployed or tested. This rough sketch of a Jenkins file was added. 
 The idea here is to create a Jenkins pipeline which points to this Jenkinsfile in GitHub. The configuration and application 
 deployments can then be managed in one run. Other things to add will be:
 1. Error handling - to allow graceful exit with readable error messages
 2. Add user prompt for `terraform apply` so that user can verify output of terraform plan before applying.
-
-##Test Application & Configuration
-This simple app was deployed and is currently available on this endpoint `/sayHello`. To test, enter this URL in any 
-browser, enter usename="username" and password="password" and you should get a response like "Hello Deliverr!".

@@ -56,11 +56,6 @@ resource "aws_elastic_beanstalk_environment" "eb_env" {
     value     = var.ec2_security_group
   }
   setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "SSHSourceRestriction"
-    value     = var.ec2_security_group
-  }
-  setting {
     name      = "VPCId"
     namespace = "aws:ec2:vpc"
     value     = var.vpc_id
