@@ -1,0 +1,37 @@
+properties([
+        parameters([
+                choice(choices: ['dev', 'qa', 'stg', 'prod'], description: 'Please select an environment', name: 'env', defaultValue: 'dev')
+        ])
+])
+
+pipeline {
+    agent any
+    stages {
+        stage('Terraform plan') {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "aws_jenkins_user",
+                              accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                sh 'export TF_VARS_access_key=$AWS_ACCESS_KEY_ID'
+                sh 'export TF_VARS_secret_key=$AWS_SECRET_ACCESS_KEY'
+                sh 'terraform init'
+                sh 'terraform plan -var-file=env/${params.env}/${params.env}.terraform.tfvars'
+            }
+        }
+        stage('Terraform apply') {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "aws_jenkins_user",
+                              accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                sh 'terraform apply -auto-approve -var-file=env/${params.env}/${params.env}.terraform.tfvars'
+            }
+        }
+        stage('Deploy web app') {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "aws_jenkins_user",
+                              accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                REGION="us-west-2"
+                sh 'aws elasticbeanstalk create-application-version --application-name $(terraform output app_name)
+                --source-bundle S3Bucket=$(terraform output s3_bucket),S3Key=$(terraform output s3_bucket_key)
+                --version-label "0.0.1" '
+                sh 'aws --region $REGION elasticbeanstalk update-environment --environment-name
+                $(terraform output env_name) --version-label $(terraform output app_version)'
+            }
+        }
+    }
+}

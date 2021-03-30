@@ -1,0 +1,15 @@
+app                     = "deliverr"
+region                  = "us-west-2"
+environment             = "dev"
+vpc_cidr                = "10.0.0.0/16"
+public_subnet_cidr      = "10.0.0.0/24"
+private_subnet_cidr     = "10.0.1.0/24"
+private_subnet_cidr_2   = "10.0.2.0/24"
+rds_identifier          = "postgresql"
+rds_engine              = "postgres"
+rds_engine_version      = "12.5"
+rds_instance_class      = "db.t2.micro"
+rds_allocated_storage   = 10
+rds_name                = "appdb"
+rds_username            = "appuser"
+rds_skip_final_snapshot = true
